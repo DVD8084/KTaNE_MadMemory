@@ -719,7 +719,21 @@ public class MadMemory : MonoBehaviour
 				if(index<=4){
 					tried=int.Parse(digit);
 					index+=1;
+                    if(tried<5){
+                        if(tried>0){
 					yield return buttons[tried-1];
+                        }
+                        else{
+                            yield return null;
+				        yield return "sendtochaterror Number too small!";
+				        yield break;
+                        }
+                    }
+                    else{
+                        yield return null;
+				        yield return "sendtochaterror Number too big!";
+				        yield break;
+                    }
 				}
 				else{
 					yield return null;
@@ -736,4 +750,3 @@ public class MadMemory : MonoBehaviour
         yield return submitButton;
 	}
 }
-
