@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
@@ -707,5 +707,33 @@ public class MadMemory : MonoBehaviour
         }
         isActivated = true;
     }
+    public string TwitchHelpMessage = "Use '!{0} press 1 2 3 4' to to press buttons with position 1 2 3 and 4! It submits immediately!";
+    IEnumerator ProcessTwitchCommand(string command)
+	{
+		string commfinal=command.Replace("press ", "");
+		string[] digitstring = commfinal.Split(' ');
+		int tried;
+		int index =1;
+		foreach(string digit in digitstring){
+			if(int.TryParse(digit, out tried)){
+				if(index<=4){
+					tried=int.Parse(digit);
+					index+=1;
+					yield return buttons[tried-1];
+				}
+				else{
+					yield return null;
+					yield return "sendtochaterror Too many digits!.";
+					yield break;
+				}
+			}
+			else{
+				yield return null;
+				yield return "sendtochaterror Digit not valid.";
+				yield break;
+			}
+		}
+        yield return submitButton;
+	}
 }
 
